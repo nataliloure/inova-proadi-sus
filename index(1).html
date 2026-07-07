@@ -1,0 +1,1883 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inova PROADI-SUS</title>
+  <style>
+    :root {
+      --ink: #12323a;
+      --muted: #577177;
+      --line: #d8e7e8;
+      --surface: #ffffff;
+      --soft: #eef7f6;
+      --soft-blue: #e9f2fb;
+      --deep: #005e72;
+      --blue: #0076a8;
+      --green: #00a676;
+      --lime: #d7ef5f;
+      --aqua: #bdeee8;
+      --warning: #b36a00;
+      --danger: #ad343e;
+      --shadow: 0 22px 70px rgba(18, 50, 58, .12);
+      --radius: 8px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 14%, rgba(189, 238, 232, .62), transparent 28rem),
+        linear-gradient(180deg, #f8fcfc 0%, #eef7f6 44%, #f8fbfb 100%);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      z-index: 10;
+      background: var(--surface);
+      padding: .75rem 1rem;
+      border: 1px solid var(--line);
+    }
+
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(216, 231, 232, .84);
+      background: rgba(248, 252, 252, .92);
+      backdrop-filter: blur(14px);
+    }
+
+    .scroll-progress {
+      height: 3px;
+      background: rgba(216, 231, 232, .65);
+      overflow: hidden;
+    }
+
+    .scroll-progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      transition: width .12s linear;
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: .8rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      min-width: 220px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: .02em;
+      background: linear-gradient(135deg, var(--deep), var(--green));
+      box-shadow: 0 12px 28px rgba(0, 94, 114, .24);
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: .75rem;
+      line-height: 1.1;
+    }
+
+    .brand strong {
+      display: block;
+      line-height: 1.1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      padding: .6rem .8rem;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible,
+    .nav-links a.active {
+      background: var(--soft);
+      color: var(--deep);
+      outline: none;
+    }
+
+    .nav-links a.active {
+      box-shadow: inset 0 0 0 1px rgba(0, 118, 168, .18);
+    }
+
+    .menu-button {
+      display: none;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: .55rem .75rem;
+      color: var(--ink);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: .78rem 1rem;
+      background: var(--surface);
+      color: var(--deep);
+      font-weight: 750;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(18, 50, 58, .06);
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(18, 50, 58, .12);
+      outline: none;
+    }
+
+    .btn:disabled {
+      opacity: .48;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--deep), var(--blue));
+    }
+
+    .btn-green {
+      color: #07332b;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--lime), var(--aqua));
+    }
+
+    .page-section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 5rem 1rem;
+    }
+
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      min-height: calc(100vh - 74px);
+      padding: 4.5rem 1rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 455px);
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      width: fit-content;
+      border: 1px solid rgba(0, 118, 168, .2);
+      background: rgba(233, 242, 251, .86);
+      color: var(--deep);
+      border-radius: 999px;
+      padding: .45rem .7rem;
+      font-size: .85rem;
+      font-weight: 750;
+    }
+
+    .hero h1 {
+      margin: 1rem 0 .85rem;
+      max-width: 760px;
+      font-size: clamp(2.35rem, 5vw, 5rem);
+      line-height: .98;
+      letter-spacing: -.035em;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-top: 1.7rem;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .75rem;
+      margin-top: 2rem;
+      max-width: 720px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .8);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.3rem;
+      color: var(--deep);
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .hero-panel {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .86);
+      border-radius: var(--radius);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .dashboard-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .25rem .15rem 1rem;
+      align-items: center;
+    }
+
+    .dashboard-top b {
+      display: block;
+    }
+
+    .dashboard-top span {
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(0, 166, 118, .16);
+    }
+
+    .idea-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: .75rem;
+      background: #ffffff;
+    }
+
+    .idea-card h3 {
+      margin: 0 0 .35rem;
+      font-size: 1rem;
+    }
+
+    .idea-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .idea-card .mini-row {
+      display: flex;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-top: .85rem;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      border-radius: 999px;
+      padding: .35rem .62rem;
+      color: var(--deep);
+      background: var(--soft-blue);
+      font-size: .78rem;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .progress {
+      height: 8px;
+      border-radius: 999px;
+      background: #dcecee;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.7rem);
+      line-height: 1.05;
+      letter-spacing: -.025em;
+    }
+
+    .section-head p {
+      max-width: 620px;
+      margin: .45rem 0 0;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .45rem .68rem;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .72);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .86);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      box-shadow: 0 10px 30px rgba(18, 50, 58, .05);
+    }
+
+    .card h3 {
+      margin: .2rem 0 .45rem;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(0, 118, 168, .12), rgba(0, 166, 118, .14));
+      color: var(--deep);
+      font-weight: 850;
+    }
+
+    .benchmark {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .benchmark-list {
+      display: grid;
+      gap: .65rem;
+    }
+
+    .check-item {
+      display: flex;
+      gap: .65rem;
+      align-items: flex-start;
+      padding: .85rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .check-item span:first-child {
+      flex: 0 0 auto;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      background: var(--green);
+      font-size: .8rem;
+      font-weight: 800;
+    }
+
+    .flow {
+      position: relative;
+      display: grid;
+      gap: .8rem;
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 58px 1fr auto;
+      gap: .9rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .9);
+      padding: 1rem;
+    }
+
+    .stage-number {
+      width: 46px;
+      height: 46px;
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--deep), var(--green));
+      font-weight: 850;
+    }
+
+    .stage h3 {
+      margin: 0 0 .2rem;
+      font-size: 1rem;
+    }
+
+    .stage p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .stage-tag {
+      border-radius: 999px;
+      padding: .38rem .62rem;
+      color: var(--deep);
+      background: var(--soft);
+      font-size: .78rem;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .form-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .form-progress {
+      display: grid;
+      gap: .9rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1rem;
+    }
+
+    .form-progress strong {
+      display: block;
+      font-size: 1.24rem;
+      line-height: 1.2;
+    }
+
+    .form-progress span {
+      color: var(--muted);
+      font-size: .88rem;
+      font-weight: 650;
+    }
+
+    .step-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: .5rem;
+    }
+
+    .step-tab {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      color: var(--muted);
+      padding: .7rem .65rem;
+      text-align: left;
+      cursor: pointer;
+      font-weight: 750;
+    }
+
+    .step-tab span {
+      display: block;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 650;
+      margin-top: .12rem;
+    }
+
+    .step-tab.active {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--deep), var(--blue));
+      box-shadow: 0 12px 26px rgba(0, 94, 114, .2);
+    }
+
+    .step-tab.active span {
+      color: rgba(255, 255, 255, .78);
+    }
+
+    .form-step {
+      display: none;
+      gap: 1rem;
+    }
+
+    .form-step.active {
+      display: grid;
+      animation: fadeUp .2s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .9rem;
+    }
+
+    label {
+      display: grid;
+      gap: .38rem;
+      color: var(--ink);
+      font-weight: 720;
+      font-size: .92rem;
+    }
+
+    label small {
+      color: var(--muted);
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #c9dddd;
+      border-radius: var(--radius);
+      padding: .78rem .85rem;
+      background: #ffffff;
+      color: var(--ink);
+      outline-color: var(--blue);
+    }
+
+    input.is-invalid,
+    select.is-invalid,
+    textarea.is-invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(173, 52, 62, .12);
+    }
+
+    textarea {
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    .span-2 {
+      grid-column: 1 / -1;
+    }
+
+    .form-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: .75rem;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 1rem;
+    }
+
+    .form-nav .btn:last-child {
+      margin-left: auto;
+    }
+
+    .aside-panel {
+      position: sticky;
+      top: 92px;
+      display: grid;
+      gap: .75rem;
+    }
+
+    .readiness-score {
+      display: grid;
+      gap: .65rem;
+    }
+
+    .readiness-score strong {
+      font-size: 2.15rem;
+      line-height: 1;
+      color: var(--deep);
+    }
+
+    .checklist {
+      display: grid;
+      gap: .45rem;
+    }
+
+    .checklist label {
+      display: flex;
+      flex-direction: row;
+      align-items: start;
+      gap: .5rem;
+      font-weight: 640;
+      color: var(--muted);
+    }
+
+    .checklist input {
+      width: auto;
+      margin-top: .25rem;
+    }
+
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .criterion {
+      min-height: 168px;
+    }
+
+    .tracker {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .proposal-list {
+      display: grid;
+      gap: .7rem;
+    }
+
+    .proposal-button {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .84);
+      color: var(--ink);
+      text-align: left;
+      border-radius: var(--radius);
+      padding: .9rem;
+      cursor: pointer;
+    }
+
+    .proposal-button[aria-pressed="true"] {
+      border-color: rgba(0, 118, 168, .45);
+      background: var(--soft-blue);
+    }
+
+    .proposal-button b,
+    .proposal-button span {
+      display: block;
+    }
+
+    .proposal-button span {
+      color: var(--muted);
+      font-size: .86rem;
+      margin-top: .18rem;
+    }
+
+    .timeline {
+      display: grid;
+      gap: .55rem;
+      margin-top: 1rem;
+    }
+
+    .timeline-step {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: .65rem;
+      align-items: start;
+      color: var(--muted);
+    }
+
+    .timeline-step .node {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #b8d4d5;
+      background: #ffffff;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      margin-top: .12rem;
+    }
+
+    .timeline-step.done .node,
+    .timeline-step.active .node {
+      border-color: var(--green);
+      background: var(--green);
+      color: #ffffff;
+      font-size: .76rem;
+      font-weight: 900;
+    }
+
+    .timeline-step.active {
+      color: var(--ink);
+      font-weight: 750;
+    }
+
+    .notice {
+      border-left: 4px solid var(--green);
+      background: rgba(238, 247, 246, .9);
+      border-radius: var(--radius);
+      padding: 1rem;
+      color: var(--muted);
+    }
+
+    .cta {
+      max-width: var(--max);
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+    }
+
+    .cta-panel {
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid rgba(0, 94, 114, .24);
+      background:
+        linear-gradient(135deg, rgba(0, 94, 114, .98), rgba(0, 118, 168, .94)),
+        radial-gradient(circle at 86% 20%, rgba(215, 239, 95, .9), transparent 18rem);
+      color: #ffffff;
+      padding: clamp(1.4rem, 4vw, 3rem);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .cta-panel h2 {
+      margin: 0 0 .55rem;
+      font-size: clamp(1.75rem, 3.3vw, 3.2rem);
+      line-height: 1.02;
+      letter-spacing: -.025em;
+    }
+
+    .cta-panel p {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255, 255, 255, .84);
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem 1rem;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .62);
+    }
+
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .toast {
+      position: fixed;
+      right: 1rem;
+      bottom: 4.8rem;
+      max-width: min(380px, calc(100vw - 2rem));
+      z-index: 30;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--ink);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      transform: translateY(150%);
+      opacity: 0;
+      transition: transform .22s ease, opacity .22s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .floating-actions {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 25;
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+    }
+
+    .floating-actions .btn {
+      padding: .68rem .85rem;
+    }
+
+    .back-to-top {
+      display: none;
+    }
+
+    .back-to-top.show {
+      display: inline-flex;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .benchmark,
+      .form-shell,
+      .tracker,
+      .cta-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 3.2rem;
+      }
+
+      .hero-panel,
+      .aside-panel {
+        position: static;
+      }
+
+      .grid,
+      .criteria-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .menu-button {
+        display: inline-flex;
+      }
+
+      .nav {
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        top: 68px;
+        background: #ffffff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: .6rem;
+        box-shadow: var(--shadow);
+        align-items: stretch;
+      }
+
+      .nav-links.open {
+        display: grid;
+      }
+
+      .nav-links a {
+        border-radius: var(--radius);
+      }
+
+      .step-tabs {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-meta,
+      .grid,
+      .criteria-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .page-section {
+        padding: 3.8rem 1rem;
+      }
+
+      .stage {
+        grid-template-columns: 46px 1fr;
+      }
+
+      .stage-tag {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .floating-actions {
+        left: 1rem;
+        right: 1rem;
+        justify-content: flex-end;
+      }
+
+      .toast {
+        bottom: 5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Navegação principal">
+      <a class="brand" href="#inicio" aria-label="Inova PROADI-SUS">
+        <span class="brand-mark">SUS</span>
+        <span>
+          <strong>Inova PROADI-SUS</strong>
+          <small>Einstein | Projetos PROADI-SUS</small>
+        </span>
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#inicio">Início</a>
+        <a href="#visao-executiva">Visão executiva</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#fluxo">Etapas</a>
+        <a href="#submissao">Submeter</a>
+        <a href="#criterios">Critérios</a>
+        <a href="#acompanhamento">Acompanhar</a>
+      </div>
+    </nav>
+    <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio">
+      <div>
+        <span class="eyebrow">Chamamento interno de ideias para fortalecer o SUS</span>
+        <h1>Sua experiência pode virar inovação para o PROADI-SUS.</h1>
+        <p>
+          Uma plataforma para captar, estruturar e avaliar ideias de profissionais dos projetos,
+          conectando problemas reais a propostas com alinhamento filantrópico, equidade,
+          sustentabilidade e potencial de impacto público.
+        </p>
+        <div class="hero-actions" aria-label="Ações principais">
+          <a class="btn btn-primary" href="#submissao">Submeter uma ideia</a>
+          <a class="btn" href="#fluxo">Entenda as etapas</a>
+          <a class="btn" href="#criterios">Ver critérios</a>
+          <a class="btn btn-green" href="#acompanhamento">Acompanhar proposta</a>
+        </div>
+        <div class="hero-meta" aria-label="Resumo do processo">
+          <div class="metric">
+          <strong>Ciclo 2026</strong>
+          <span>Chamamento contínuo de ideias</span>
+        </div>
+        <div class="metric">
+          <strong>7 etapas</strong>
+          <span>Triagem, aderência, inovação e decisão</span>
+        </div>
+        <div class="metric">
+          <strong>Capacitação</strong>
+          <span>Trilha para propostas aprovadas</span>
+        </div>
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Carteira de ideias em acompanhamento">
+        <div class="dashboard-top">
+          <div>
+            <b>Carteira de ideias</b>
+            <span>Acompanhamento das propostas em análise</span>
+          </div>
+          <span class="status-dot" aria-hidden="true"></span>
+        </div>
+        <article class="idea-card">
+          <h3>Telemonitoramento para linhas de cuidado</h3>
+          <p>Dados e informação · Cuidado em saúde</p>
+          <div class="mini-row">
+            <span class="badge">Em análise técnica</span>
+            <span>64%</span>
+          </div>
+          <div class="progress" aria-hidden="true"><span style="width:64%"></span></div>
+        </article>
+        <article class="idea-card">
+          <h3>Modelo de educação permanente regionalizada</h3>
+          <p>Educação · Equidade</p>
+          <div class="mini-row">
+            <span class="badge">Aprovada para capacitação</span>
+            <span>100%</span>
+          </div>
+          <div class="progress" aria-hidden="true"><span style="width:100%"></span></div>
+        </article>
+        <article class="idea-card">
+          <h3>Gestão de resíduos em ciclos de treinamento</h3>
+          <p>Meio ambiente · Sustentabilidade</p>
+          <div class="mini-row">
+            <span class="badge">Devolvida para ajustes</span>
+            <span>42%</span>
+          </div>
+          <div class="progress" aria-hidden="true"><span style="width:42%"></span></div>
+        </article>
+      </aside>
+    </section>
+
+    <section class="page-section" id="visao-executiva">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Visão executiva</span>
+          <h2>Um canal único para transformar conhecimento dos projetos em propostas qualificadas.</h2>
+        </div>
+        <p>
+          O portal organiza a entrada de ideias, evita duplicidades, orienta a maturação das propostas
+          e apoia decisões do Escritório PROADI com critérios transparentes.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="icon">1</span>
+          <h3>Captar</h3>
+          <p>Receber ideias de analistas, bolsistas, especialistas, coordenadores e equipes dos projetos.</p>
+        </article>
+        <article class="card">
+          <span class="icon">2</span>
+          <h3>Qualificar</h3>
+          <p>Converter sugestões em propostas com problema, público, escopo, recursos, riscos e indicadores.</p>
+        </article>
+        <article class="card">
+          <span class="icon">3</span>
+          <h3>Priorizar</h3>
+          <p>Avaliar aderência ao PROADI-SUS, inovação, sustentabilidade, equidade e impacto para o SUS.</p>
+        </article>
+        <article class="card">
+          <span class="icon">4</span>
+          <h3>Desenvolver</h3>
+          <p>Encaminhar propostas aprovadas para capacitação, comunicação, captação e estruturação.</p>
+        </article>
+        <article class="card">
+          <span class="icon">G</span>
+          <h3>Governança</h3>
+          <p>Registrar o status da análise e permitir devolutiva clara: aprovar, recusar ou devolver para ajustes.</p>
+        </article>
+        <article class="card">
+          <span class="icon">S</span>
+          <h3>Valor para o SUS</h3>
+          <p>Orientar inovação para acesso, qualidade, gestão, formação, cuidado, equidade e sustentabilidade.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section" id="como-funciona">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Como funciona</span>
+          <h2>Da experiência de campo à proposta pronta para avaliação.</h2>
+        </div>
+        <p>
+          O Inova PROADI-SUS organiza a escuta de profissionais dos projetos,
+          qualifica as ideias recebidas e encaminha as propostas com maior aderência
+          para análise e desenvolvimento.
+        </p>
+      </div>
+
+      <div class="benchmark">
+        <div class="card">
+          <h3>Jornada da ideia</h3>
+          <div class="benchmark-list" style="margin-top:1rem">
+            <div class="check-item">
+              <span>1</span>
+              <div><strong>Submissão orientada.</strong><br>O profissional registra o problema, o público beneficiado, a solução proposta e a contribuição esperada para o SUS.</div>
+            </div>
+            <div class="check-item">
+              <span>2</span>
+              <div><strong>Análise de aderência.</strong><br>A proposta passa por critérios de similaridade, viabilidade, inovação, sustentabilidade, equidade e alinhamento institucional.</div>
+            </div>
+            <div class="check-item">
+              <span>3</span>
+              <div><strong>Encaminhamento responsável.</strong><br>Ao final da análise, a ideia pode ser aprovada para capacitação, recusada com justificativa ou devolvida para ajustes.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid" aria-label="Recursos do portal">
+          <article class="card">
+            <span class="icon">S</span>
+            <h3>Similaridade antes de esforço</h3>
+            <p>Evita duplicidade e favorece integração com projetos já existentes no portfólio.</p>
+          </article>
+          <article class="card">
+            <span class="icon">P</span>
+            <h3>Estrutura mínima de projeto</h3>
+            <p>Objetivo, escopo, partes interessadas, riscos, custos e indicadores entram como pré-requisitos.</p>
+          </article>
+          <article class="card">
+            <span class="icon">E</span>
+            <h3>Equidade delimitada</h3>
+            <p>A proposta precisa indicar população, território ou desigualdade contemplada.</p>
+          </article>
+          <article class="card">
+            <span class="icon">F</span>
+            <h3>Filantropia e interesse público</h3>
+            <p>O filtro pergunta se a ideia fortalece o SUS e conversa com as prioridades do PROADI-SUS.</p>
+          </article>
+          <article class="card">
+            <span class="icon">C</span>
+            <h3>Capacitação pós-aprovação</h3>
+            <p>A aprovação leva a uma trilha de comunicação, recursos, indicadores, equipe e orçamento.</p>
+          </article>
+          <article class="card">
+            <span class="icon">M</span>
+            <h3>Monitoramento desde o início</h3>
+            <p>Indicadores e plano de acompanhamento aparecem antes da implementação.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="por-que">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Por que inovar no PROADI-SUS?</span>
+          <h2>Quem executa projetos enxerga oportunidades que relatórios nem sempre capturam.</h2>
+        </div>
+        <p>
+          Analistas, bolsistas, especialistas, coordenadores e equipes de campo conhecem gargalos,
+          soluções improvisadas e necessidades recorrentes. A plataforma transforma esse conhecimento
+          prático em propostas comparáveis, avaliáveis e orientadas ao fortalecimento do SUS.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="icon">∞</span>
+          <h3>Valor público</h3>
+          <p>Ideias são analisadas pelo potencial de melhorar acesso, qualidade, eficiência e continuidade do cuidado.</p>
+        </article>
+        <article class="card">
+          <span class="icon">≡</span>
+          <h3>Governança clara</h3>
+          <p>O fluxo deixa explícito quem avalia, o que é avaliado e quais retornos são possíveis.</p>
+        </article>
+        <article class="card">
+          <span class="icon">↗</span>
+          <h3>Escala responsável</h3>
+          <p>A sustentabilidade é considerada desde a origem, evitando propostas interessantes, mas sem continuidade.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section" id="fluxo">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Fluxo de avaliação</span>
+          <h2>Um funil em sete etapas, com decisão e devolutiva.</h2>
+        </div>
+        <p>
+          A lógica é seletiva sem ser opaca: cada etapa responde a uma pergunta de decisão.
+        </p>
+      </div>
+      <div class="flow">
+        <article class="stage">
+          <span class="stage-number">1</span>
+          <div>
+            <h3>Avaliação de similaridade</h3>
+            <p>Existe projeto, produto, estudo ou iniciativa semelhante no portfólio PROADI-SUS?</p>
+          </div>
+          <span class="stage-tag">Evita duplicidade</span>
+        </article>
+        <article class="stage">
+          <span class="stage-number">2</span>
+          <div>
+            <h3>Critérios mínimos de estruturação</h3>
+            <p>A ideia tem objetivo, escopo, entregáveis, partes interessadas, recursos, riscos, custos e indicadores?</p>
+          </div>
+          <span class="stage-tag">Maturidade inicial</span>
+        </article>
+        <article class="stage">
+          <span class="stage-number">3</span>
+          <div>
+            <h3>Alinhamento ao eixo filantrópico</h3>
+            <p>A proposta está conectada ao interesse público, à finalidade filantrópica e ao fortalecimento do SUS?</p>
+          </div>
+          <span class="stage-tag">Aderência institucional</span>
+        </article>
+        <article class="stage">
+          <span class="stage-number">4</span>
+          <div>
+            <h3>Critério de inovação</h3>
+            <p>Qual é a novidade, o diferencial e o valor gerado em relação às práticas existentes?</p>
+          </div>
+          <span class="stage-tag">Novidade útil</span>
+        </article>
+        <article class="stage">
+          <span class="stage-number">5</span>
+          <div>
+            <h3>Projeção de sustentabilidade</h3>
+            <p>A proposta tem viabilidade de continuidade, manutenção, escala e uso racional de recursos?</p>
+          </div>
+          <span class="stage-tag">Continuidade</span>
+        </article>
+        <article class="stage">
+          <span class="stage-number">6</span>
+          <div>
+            <h3>Equidade no escopo</h3>
+            <p>Quais populações, territórios ou desigualdades são contemplados, e como isso será delimitado?</p>
+          </div>
+          <span class="stage-tag">Foco explícito</span>
+        </article>
+        <article class="stage">
+          <span class="stage-number">7</span>
+          <div>
+            <h3>Avaliação do Planejamento PROADI</h3>
+            <p>O Escritório PROADI aprova, recusa com justificativa ou devolve para ajustes antes da capacitação.</p>
+          </div>
+          <span class="stage-tag">Decisão final</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section" id="submissao">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Submissão de ideia</span>
+          <h2>Descreva o problema antes de vender a solução.</h2>
+        </div>
+        <p>
+          Ao enviar, a proposta entra na área de acompanhamento com status inicial de ideia recebida.
+        </p>
+      </div>
+
+      <div class="form-shell">
+        <form class="card" id="ideaForm" novalidate>
+          <div class="form-progress">
+            <div>
+              <span>Etapa <b id="currentStep">1</b> de 4</span>
+              <strong id="stepTitle">Identificação da proposta</strong>
+            </div>
+            <div class="step-tabs" role="tablist" aria-label="Etapas da submissão">
+              <button class="step-tab active" type="button" data-step-target="0">1. Identificação<span>Quem propõe e onde nasce</span></button>
+              <button class="step-tab" type="button" data-step-target="1">2. Problema<span>Necessidade e público</span></button>
+              <button class="step-tab" type="button" data-step-target="2">3. Solução<span>Ideia e resultado</span></button>
+              <button class="step-tab" type="button" data-step-target="3">4. Implantação<span>Recursos, riscos e envio</span></button>
+            </div>
+          </div>
+
+          <div class="form-step active" data-step="0">
+            <div class="form-grid">
+              <label>
+                Nome da ideia
+                <input required name="ideaName" placeholder="Ex.: Painel de indicadores regionais">
+              </label>
+              <label>
+                Nome do proponente
+                <input required name="owner" placeholder="Nome completo">
+              </label>
+              <label>
+                Cargo ou vínculo no projeto
+                <select required name="role">
+                  <option value="">Selecione</option>
+                  <option>Analista</option>
+                  <option>Bolsista</option>
+                  <option>Especialista</option>
+                  <option>Coordenador(a)</option>
+                  <option>Pesquisador(a)</option>
+                  <option>Outro vínculo</option>
+                </select>
+              </label>
+              <label>
+                Projeto PROADI-SUS relacionado
+                <input required name="project" placeholder="Nome do projeto, programa ou frente">
+              </label>
+              <label>
+                Departamento ou área
+                <input name="department" placeholder="Ex.: Planejamento, Pesquisa, Educação">
+              </label>
+              <label>
+                Tema principal
+                <select required name="theme">
+                  <option value="">Selecione</option>
+                  <option>Tecnologia</option>
+                  <option>Meio ambiente</option>
+                  <option>Gestão</option>
+                  <option>Cuidado em saúde</option>
+                  <option>Educação</option>
+                  <option>Sustentabilidade</option>
+                  <option>Equidade</option>
+                  <option>Dados e informação</option>
+                  <option>Processos</option>
+                  <option>Comunicação</option>
+                  <option>Inovação assistencial</option>
+                  <option>Inovação social</option>
+                  <option>Outro</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-step" data-step="1">
+            <div class="form-grid">
+              <label class="span-2">
+                Problema identificado
+                <small>Seja específico: onde ocorre, quem é afetado e qual consequência prática aparece.</small>
+                <textarea required name="problem" placeholder="Descreva o problema observado nos projetos ou na interface com o SUS."></textarea>
+              </label>
+              <label>
+                Público beneficiado
+                <textarea required name="audience" placeholder="Profissionais, gestores, pacientes, territórios, serviços ou populações específicas."></textarea>
+              </label>
+              <label>
+                Como a ideia contribui para o SUS?
+                <textarea required name="susContribution" placeholder="Relacione a proposta a acesso, qualidade, equidade, gestão, capacitação, pesquisa, tecnologia ou sustentabilidade."></textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-step" data-step="2">
+            <div class="form-grid">
+              <label class="span-2">
+                Descrição da ideia
+                <small>Descreva a solução com clareza suficiente para outra área entender o que seria feito.</small>
+                <textarea required name="description" placeholder="Explique a solução proposta de forma objetiva."></textarea>
+              </label>
+              <label>
+                Justificativa
+                <textarea name="justification" placeholder="Por que a ideia é relevante para o PROADI-SUS e para o SUS?"></textarea>
+              </label>
+              <label>
+                Resultado esperado
+                <textarea name="result" placeholder="Que mudança seria observada se a proposta funcionasse?"></textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-step" data-step="3">
+            <div class="form-grid">
+              <label>
+                Recursos necessários
+                <textarea name="resources" placeholder="Equipe, tecnologia, orçamento, dados, parceiros ou estrutura."></textarea>
+              </label>
+              <label>
+                Possíveis parceiros
+                <textarea name="partners" placeholder="Áreas internas, hospitais, secretarias, serviços, universidades ou redes."></textarea>
+              </label>
+              <label class="span-2">
+                Riscos ou limitações
+                <textarea name="risks" placeholder="O que pode impedir execução, adesão, escala ou continuidade?"></textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-nav">
+            <button class="btn" type="button" id="prevStep">Voltar</button>
+            <button class="btn btn-primary" type="button" id="nextStep">Continuar</button>
+            <button class="btn btn-green" type="submit" id="submitIdea">Enviar ideia para triagem</button>
+          </div>
+        </form>
+
+        <aside class="aside-panel">
+          <div class="card readiness-score" aria-live="polite">
+            <span class="badge">Maturidade da submissão</span>
+            <strong id="scoreValue">0%</strong>
+            <div class="progress" aria-hidden="true"><span id="scoreBar" style="width:0%"></span></div>
+            <p id="scoreText">Preencha os campos essenciais para qualificar a proposta.</p>
+          </div>
+          <div class="card">
+            <h3>Checklist mínimo</h3>
+            <div class="checklist">
+              <label><input type="checkbox" data-score checked disabled> Problema delimitado</label>
+              <label><input type="checkbox" class="score-check"> Objetivo e resultado esperado</label>
+              <label><input type="checkbox" class="score-check"> Público ou território definido</label>
+              <label><input type="checkbox" class="score-check"> Recursos e riscos mapeados</label>
+              <label><input type="checkbox" class="score-check"> Contribuição ao SUS explícita</label>
+              <label><input type="checkbox" class="score-check"> Equidade ou sustentabilidade consideradas</label>
+            </div>
+          </div>
+          <div class="notice">
+            Propostas aprovadas seguem para capacitação em comunicação, captação de recursos,
+            estruturação, controle de gastos, monitoramento e composição de equipe.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="page-section" id="criterios">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Critérios de avaliação</span>
+          <h2>O que precisa estar claro para a ideia avançar.</h2>
+        </div>
+        <p>
+          Os critérios combinam governança de projetos, aderência PROADI-SUS e valor público para o SUS.
+        </p>
+      </div>
+      <div class="criteria-grid">
+        <article class="card criterion">
+          <span class="icon">01</span>
+          <h3>Similaridade</h3>
+          <p>Verifica sobreposição com projetos, produtos ou estudos existentes.</p>
+        </article>
+        <article class="card criterion">
+          <span class="icon">02</span>
+          <h3>Estrutura mínima</h3>
+          <p>Checa objetivo, escopo, entregáveis, stakeholders, cronograma, recursos, riscos, custos e indicadores.</p>
+        </article>
+        <article class="card criterion">
+          <span class="icon">03</span>
+          <h3>Alinhamento filantrópico</h3>
+          <p>Analisa interesse público, fortalecimento do SUS e compatibilidade com finalidades institucionais.</p>
+        </article>
+        <article class="card criterion">
+          <span class="icon">04</span>
+          <h3>Inovação</h3>
+          <p>Avalia novidade, diferencial, aprendizagem institucional e valor gerado.</p>
+        </article>
+        <article class="card criterion">
+          <span class="icon">05</span>
+          <h3>Sustentabilidade</h3>
+          <p>Observa continuidade, manutenção, recursos, escala e efeitos após a implementação.</p>
+        </article>
+        <article class="card criterion">
+          <span class="icon">06</span>
+          <h3>Equidade</h3>
+          <p>Exige delimitação de população, território, barreira de acesso ou desigualdade contemplada.</p>
+        </article>
+        <article class="card criterion">
+          <span class="icon">07</span>
+          <h3>Viabilidade</h3>
+          <p>Considera capacidade de execução, dependências, governança e riscos de implantação.</p>
+        </article>
+        <article class="card criterion">
+          <span class="icon">08</span>
+          <h3>Impacto para o SUS</h3>
+          <p>Relaciona a proposta a acesso, qualidade, eficiência, formação, pesquisa, gestão ou cuidado.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section" id="capacitacao">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Capacitação das aprovadas</span>
+          <h2>A boa ideia ganha musculatura de projeto.</h2>
+        </div>
+        <p>
+          A aprovação não encerra o processo. Ela abre uma trilha para tornar a proposta comunicável,
+          financiável, mensurável e executável.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card"><span class="icon">C</span><h3>Comunicação da ideia</h3><p>Preparação de narrativa, pitch institucional e materiais de apresentação.</p></article>
+        <article class="card"><span class="icon">R</span><h3>Captação de recursos</h3><p>Mapeamento de oportunidades, parceiros e justificativa de investimento.</p></article>
+        <article class="card"><span class="icon">E</span><h3>Estrutura do projeto</h3><p>Escopo, entregáveis, cronograma, riscos, orçamento e governança.</p></article>
+        <article class="card"><span class="icon">$</span><h3>Controle de gastos</h3><p>Plano de custos, categorias de despesa e monitoramento financeiro.</p></article>
+        <article class="card"><span class="icon">I</span><h3>Indicadores</h3><p>Definição de métricas, linha de base, metas e rotina de acompanhamento.</p></article>
+        <article class="card"><span class="icon">T</span><h3>Time recomendado</h3><p>Identificação dos profissionais adequados e dos papéis indispensáveis.</p></article>
+      </div>
+    </section>
+
+    <section class="page-section" id="acompanhamento">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Acompanhamento</span>
+          <h2>Status das propostas.</h2>
+        </div>
+        <p>
+          Selecione uma proposta para ver em qual etapa ela está. Ideias enviadas pelo formulário aparecem neste painel.
+        </p>
+      </div>
+      <div class="tracker">
+        <aside class="card">
+          <h3>Minhas propostas</h3>
+          <div class="proposal-list" id="proposalList"></div>
+        </aside>
+        <section class="card" aria-live="polite">
+          <div class="pill-row" id="selectedTags"></div>
+          <h3 id="selectedTitle" style="font-size:1.45rem;margin:.9rem 0 .35rem"></h3>
+          <p id="selectedDescription"></p>
+          <div class="timeline" id="timeline"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="cta" aria-label="Chamada final">
+      <div class="cta-panel">
+        <div>
+          <h2>Transforme problemas reais em propostas estruturadas para o SUS.</h2>
+          <p>
+            Inove com propósito, equidade e impacto público. Ideias que nascem nos projetos
+            podem fortalecer o PROADI-SUS, apoiar decisões melhores e produzir valor para a população.
+          </p>
+        </div>
+        <a class="btn btn-green" href="#submissao">Começar submissão</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Inova PROADI-SUS · Portal de ideias</span>
+      <span>Canal interno para inovação, equidade e fortalecimento do SUS.</span>
+    </div>
+  </footer>
+
+  <div class="floating-actions" aria-label="Ações rápidas">
+    <a class="btn btn-primary" href="#submissao">Nova ideia</a>
+    <button class="btn back-to-top" type="button" id="backToTop">Topo</button>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const navLinks = document.getElementById('navLinks');
+    const menuButton = document.querySelector('.menu-button');
+    const form = document.getElementById('ideaForm');
+    const scoreChecks = Array.from(document.querySelectorAll('.score-check'));
+    const scoreValue = document.getElementById('scoreValue');
+    const scoreBar = document.getElementById('scoreBar');
+    const scoreText = document.getElementById('scoreText');
+    const proposalList = document.getElementById('proposalList');
+    const selectedTags = document.getElementById('selectedTags');
+    const selectedTitle = document.getElementById('selectedTitle');
+    const selectedDescription = document.getElementById('selectedDescription');
+    const timeline = document.getElementById('timeline');
+    const toast = document.getElementById('toast');
+    const scrollProgress = document.getElementById('scrollProgress');
+    const backToTop = document.getElementById('backToTop');
+    const formSteps = Array.from(document.querySelectorAll('.form-step'));
+    const stepTabs = Array.from(document.querySelectorAll('.step-tab'));
+    const currentStepLabel = document.getElementById('currentStep');
+    const stepTitle = document.getElementById('stepTitle');
+    const prevStepButton = document.getElementById('prevStep');
+    const nextStepButton = document.getElementById('nextStep');
+    const submitIdeaButton = document.getElementById('submitIdea');
+    const sectionLinks = Array.from(document.querySelectorAll('.nav-links a'));
+    const observedSections = sectionLinks
+      .map(link => document.querySelector(link.getAttribute('href')))
+      .filter(Boolean);
+
+    let activeFormStep = 0;
+
+    const stages = [
+      'Ideia recebida',
+      'Em análise de similaridade',
+      'Em avaliação técnica',
+      'Em avaliação de inovação',
+      'Em avaliação de sustentabilidade e equidade',
+      'Em análise pelo Planejamento PROADI',
+      'Aprovada para capacitação'
+    ];
+
+    const proposals = [
+      {
+        title: 'Educação permanente regionalizada',
+        theme: 'Educação',
+        statusIndex: 6,
+        description: 'Trilha de capacitação adaptada a necessidades regionais e indicadores de acesso.',
+        decision: 'Aprovada para capacitação'
+      },
+      {
+        title: 'Telemonitoramento para linhas de cuidado',
+        theme: 'Dados e informação',
+        statusIndex: 3,
+        description: 'Uso de painel e telemonitoramento para apoiar seguimento de pacientes em redes de cuidado.',
+        decision: 'Em avaliação de inovação'
+      },
+      {
+        title: 'Gestão de resíduos em ciclos de treinamento',
+        theme: 'Meio ambiente',
+        statusIndex: 2,
+        description: 'Redução de descarte em oficinas presenciais e eventos formativos vinculados aos projetos.',
+        decision: 'Devolvida para ajustes'
+      }
+    ];
+
+    const stepTitles = [
+      'Identificação da proposta',
+      'Problema e público beneficiado',
+      'Solução e resultado esperado',
+      'Implantação e envio'
+    ];
+
+    function toggleMenu() {
+      const open = navLinks.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+    }
+
+    function closeMenu() {
+      navLinks.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+    }
+
+    function setActiveFormStep(index) {
+      activeFormStep = Math.max(0, Math.min(index, formSteps.length - 1));
+      formSteps.forEach((step, stepIndex) => {
+        step.classList.toggle('active', stepIndex === activeFormStep);
+      });
+      stepTabs.forEach((tab, tabIndex) => {
+        tab.classList.toggle('active', tabIndex === activeFormStep);
+        tab.setAttribute('aria-selected', String(tabIndex === activeFormStep));
+      });
+      currentStepLabel.textContent = String(activeFormStep + 1);
+      stepTitle.textContent = stepTitles[activeFormStep];
+      prevStepButton.disabled = activeFormStep === 0;
+      nextStepButton.style.display = activeFormStep === formSteps.length - 1 ? 'none' : 'inline-flex';
+      submitIdeaButton.style.display = activeFormStep === formSteps.length - 1 ? 'inline-flex' : 'none';
+    }
+
+    function getRequiredFields(step) {
+      return Array.from(step.querySelectorAll('input[required], select[required], textarea[required]'));
+    }
+
+    function validateStep(index, focusFirst = true) {
+      const fields = getRequiredFields(formSteps[index]);
+      const invalid = fields.filter(field => !field.value.trim());
+      fields.forEach(field => field.classList.toggle('is-invalid', invalid.includes(field)));
+      if (invalid.length && focusFirst) {
+        invalid[0].focus();
+        showToast('Preencha os campos obrigatórios desta etapa para continuar.');
+      }
+      return invalid.length === 0;
+    }
+
+    function validateAllSteps() {
+      for (let index = 0; index < formSteps.length; index += 1) {
+        if (!validateStep(index, false)) {
+          setActiveFormStep(index);
+          validateStep(index, true);
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function updateScrollState() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = height > 0 ? Math.min(100, Math.max(0, (scrollTop / height) * 100)) : 0;
+      scrollProgress.style.width = progress + '%';
+      backToTop.classList.toggle('show', scrollTop > 520);
+    }
+
+    function updateScore() {
+      const checked = scoreChecks.filter(item => item.checked).length;
+      const score = Math.round(((checked + 1) / (scoreChecks.length + 1)) * 100);
+      scoreValue.textContent = score + '%';
+      scoreBar.style.width = score + '%';
+      if (score < 45) {
+        scoreText.textContent = 'A proposta ainda parece inicial. Delimite problema, público e contribuição ao SUS.';
+      } else if (score < 80) {
+        scoreText.textContent = 'Boa base. Complete riscos, recursos e resultados esperados para fortalecer a triagem.';
+      } else {
+        scoreText.textContent = 'Submissão madura para análise inicial e comparação com o portfólio.';
+      }
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      window.setTimeout(() => toast.classList.remove('show'), 4200);
+    }
+
+    function renderProposals(selectedIndex = 0) {
+      proposalList.innerHTML = '';
+      proposals.forEach((proposal, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'proposal-button';
+        button.setAttribute('aria-pressed', String(index === selectedIndex));
+        button.innerHTML = `<b>${proposal.title}</b><span>${proposal.theme} · ${proposal.decision}</span>`;
+        button.addEventListener('click', () => renderProposals(index));
+        proposalList.appendChild(button);
+      });
+      renderSelected(proposals[selectedIndex]);
+    }
+
+    function renderSelected(proposal) {
+      selectedTags.innerHTML = '';
+      [proposal.theme, proposal.decision].forEach(label => {
+        const span = document.createElement('span');
+        span.className = 'pill';
+        span.textContent = label;
+        selectedTags.appendChild(span);
+      });
+      selectedTitle.textContent = proposal.title;
+      selectedDescription.textContent = proposal.description;
+      timeline.innerHTML = '';
+      stages.forEach((stage, index) => {
+        const item = document.createElement('div');
+        const active = index === proposal.statusIndex;
+        const done = index < proposal.statusIndex;
+        item.className = `timeline-step ${done ? 'done' : ''} ${active ? 'active' : ''}`.trim();
+        item.innerHTML = `<span class="node">${done || active ? '✓' : ''}</span><span>${stage}</span>`;
+        timeline.appendChild(item);
+      });
+    }
+
+    menuButton.addEventListener('click', toggleMenu);
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+    scoreChecks.forEach(item => item.addEventListener('change', updateScore));
+    stepTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = Number(tab.dataset.stepTarget);
+        if (target <= activeFormStep || validateStep(activeFormStep)) {
+          setActiveFormStep(target);
+        }
+      });
+    });
+
+    prevStepButton.addEventListener('click', () => setActiveFormStep(activeFormStep - 1));
+    nextStepButton.addEventListener('click', () => {
+      if (validateStep(activeFormStep)) {
+        setActiveFormStep(activeFormStep + 1);
+      }
+    });
+
+    form.querySelectorAll('input, select, textarea').forEach(field => {
+      field.addEventListener('input', () => field.classList.remove('is-invalid'));
+      field.addEventListener('change', () => field.classList.remove('is-invalid'));
+    });
+
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    backToTop.addEventListener('click', () => {
+      document.getElementById('inicio').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      sectionLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + visible.target.id);
+      });
+    }, { rootMargin: '-35% 0px -55% 0px', threshold: [0, .2, .5, 1] });
+
+    observedSections.forEach(section => sectionObserver.observe(section));
+
+    form.addEventListener('input', () => {
+      const fields = Array.from(form.querySelectorAll('input[required], select[required], textarea[required]'));
+      const completed = fields.filter(field => field.value.trim()).length;
+      const requiredScore = Math.round((completed / fields.length) * 50);
+      const checkedScore = Math.round((scoreChecks.filter(item => item.checked).length / scoreChecks.length) * 50);
+      const score = Math.min(100, requiredScore + checkedScore);
+      scoreValue.textContent = score + '%';
+      scoreBar.style.width = score + '%';
+      scoreText.textContent = score < 70
+        ? 'Continue preenchendo os campos obrigatórios e o checklist de maturidade.'
+        : 'A proposta já tem informações suficientes para a triagem inicial.';
+    });
+
+    form.addEventListener('change', () => form.dispatchEvent(new Event('input')));
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!validateAllSteps()) {
+        return;
+      }
+      const data = new FormData(form);
+      const newProposal = {
+        title: data.get('ideaName') || 'Nova ideia submetida',
+        theme: data.get('theme') || 'Tema a classificar',
+        statusIndex: 0,
+        description: data.get('description') || 'Proposta recebida para análise inicial.',
+        decision: 'Ideia recebida'
+      };
+      proposals.unshift(newProposal);
+      renderProposals(0);
+      form.reset();
+      scoreChecks.forEach(item => item.checked = false);
+      updateScore();
+      setActiveFormStep(0);
+      showToast('Ideia enviada para triagem inicial. Ela já aparece em acompanhamento.');
+      document.getElementById('acompanhamento').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    setActiveFormStep(0);
+    updateScrollState();
+    updateScore();
+    renderProposals();
+  </script>
+</body>
+</html>
